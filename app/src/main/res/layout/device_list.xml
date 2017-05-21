@@ -1,74 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingTop="3dp">
-    <TextView
-        android:layout_width="fill_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/label_me" />
+        android:padding="16dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_002_car"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_005_zeppelin"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_006_helicopter"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_007_sailing_ship"/>
+        <TextView
+            android:id="@+id/tvWifi"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:gravity="right|center_vertical"
+            android:paddingRight="8dp"
+            android:text="dfgsdfgsdfg"
+            android:layout_height="match_parent"
+            android:textColor="@color/textPrimary"/>
+        <ImageButton
+            android:id="@+id/btnWifi"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@android:color/holo_blue_light" />
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/textBackgroundAccent"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:text="@string/label_me"
+        android:textColor="@color/textPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical" />
     <!-- Self information -->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:background="?android:attr/activatedBackgroundIndicator"
-        android:padding="3dip">
+        android:orientation="horizontal"
+        android:padding="8dp">
+
         <ImageView
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginRight="2dp"
             android:src="@drawable/machine" />
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:layout_height="fill_parent">
+            android:orientation="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
             <TextView
                 android:id="@+id/my_name"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center_vertical" />
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center_vertical"
+                android:textColor="@color/textPrimary" />
+
             <TextView
                 android:id="@+id/my_status"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:ellipsize="marquee"
+                android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:ellipsize="marquee" />
+                android:textColor="@color/textSecondary" />
         </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/label_peers" />
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:gravity="center_vertical"
-        android:background="@android:color/holo_blue_light" />
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/textBackgroundAccent"
+        android:text="@string/label_peers"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical" />
     <!-- Available peers -->
     <ListView
         android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="150dp"
         android:drawSelectorOnTop="false" />
+
     <TextView
         android:id="@id/android:empty"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_height="match_parent"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+
         android:text="@string/empty_message" />
+
+    <Button
+        android:id="@+id/btnDiscover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="16dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/discover_peers_button" />
+
 </LinearLayout>

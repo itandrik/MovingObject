@@ -1,17 +1,30 @@
 <resources>
-    <string name="app_name">WiFi Direct</string>
-    <string name="enable_p2p_button">P2P On/Off</string>
-    <string name="discover_peers_button">Discover</string>
-    <string name="connect_peer_button">Connect</string>
-    <string name="disconnect_peer_button">Disconnect</string>
+    <string name="app_name">Керування рухомим об\'єктом</string>
+    <string name="enable_p2p_button">P2P Ввімк/Вимк</string>
+    <string name="discover_peers_button">Пошук</string>
+    <string name="connect_peer_button">Підключитись</string>
+    <string name="disconnect_peer_button">Відключитись</string>
     <string name="get_file_button">Launch Gallery</string>
     <string name="empty"></string>
-    <string name="yes">yes</string>
-    <string name="no">no</string>
+    <string name="yes">ТАК</string>
+    <string name="no">НІ</string>
     <string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
-    <string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action Bar</string>
-    <string name="p2p_off_warning">Enable P2P from action bar button above or system settings</string>
-    <string name="group_owner_text">"Am I the Group Owner? "</string>
-    <string name="label_me">ME</string>
-    <string name="label_peers">PEERS</string>
+    <string name="empty_message">Список пристроїв пустий</string>
+    <string name="p2p_off_warning">Увімнкніть Enable P2P Wi-Fi Direct за допомогою меню або через налаштування телефону</string>
+    <string name="group_owner_text">"Я власник групи? "</string>
+    <string name="label_me">Ваш пристрій</string>
+    <string name="label_peers">Рухомі об\'єкти</string>
+
+    <!-- Wifi toggle -->
+    <string name="wifi_on">Wi-Fi Direct увімкнено</string>
+    <string name="wifi_off">Wi-Fi Direct вимкнено</string>
+
+    <!-- Dialog wifi -->
+    <string name="wifi_direct_is_not_enabled">Wi-Fi Direct не увімкнено на вашому пристрої</string>
+    <string name="message_enable_wifi">Ви бажаєте увімкунти функцію Wi-Fi Direct?</string>
+
+    <!-- Dialog discover peers -->
+    <string name="finding_peers_title">Зачекайте, будь ласка</string>
+    <string name="finding_peers_msg">Відбувається пошук рухомих об\'єктів</string>
+
 </resources>

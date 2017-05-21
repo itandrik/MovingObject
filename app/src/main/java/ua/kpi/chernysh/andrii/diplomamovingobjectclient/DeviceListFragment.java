@@ -1,6 +1,5 @@
 package ua.kpi.chernysh.andrii.diplomamovingobjectclient;
 
-import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +8,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.os.Bundle;
+import android.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +34,8 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.setListAdapter(new WiFiPeerListAdapter(getActivity(), R.layout.row_devices, peers));
+
+//        this.setEmptyText(getString(R.string.empty_message));
     }
 
     @Override
@@ -124,7 +126,7 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
     public void updateThisDevice(WifiP2pDevice device) {
         this.device = device;
         TextView view = (TextView) mContentView.findViewById(R.id.my_name);
-        view.setText(device.deviceName);
+        view.setText(device.deviceName + "; address : " + device.deviceAddress);
         view = (TextView) mContentView.findViewById(R.id.my_status);
         view.setText(getDeviceStatus(device.status));
     }
@@ -155,11 +157,13 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel", "finding peers", true,
-                true, new DialogInterface.OnCancelListener() {
+        progressDialog = ProgressDialog.show(getActivity(),
+                getString(R.string.finding_peers_title),
+                getString(R.string.finding_peers_msg), true, true,
+                new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-
+                        dialog.dismiss();
                     }
                 });
     }
