@@ -1,4 +1,4 @@
-package ua.kpi.chernysh.andrii.diplomamovingobjectclient;
+package ua.kpi.chernysh.andrii.diplomamovingobjectclient.model;
 
 import android.app.IntentService;
 import android.content.ContentResolver;
@@ -6,12 +6,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.activity.WiFiDirectActivity;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment.DeviceDetailFragment;
+
 /**
  * A service that process each file transfer request i.e Intent by opening a
  * socket connection with the WiFi Direct Group Owner and writing the file
@@ -45,15 +53,22 @@ public class FileTransferService extends IntentService {
                 socket.bind(null);
                 socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
                 Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
-                OutputStream stream = socket.getOutputStream();
+               /* OutputStream stream = socket.getOutputStream();
                 ContentResolver cr = context.getContentResolver();
                 InputStream is = null;
                 try {
                     is = cr.openInputStream(Uri.parse(fileUri));
                 } catch (FileNotFoundException e) {
                     Log.d(WiFiDirectActivity.TAG, e.toString());
-                }
-                DeviceDetailFragment.copyFile(is, stream);
+                }*/
+
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                dataOutputStream.writeLong(new Date().getTime());
+                dataOutputStream.writeInt(1);
+
+                Log.d(WiFiDirectActivity.TAG,"Start transfer data : " + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date().getTime()));
+
+                //DeviceDetailFragment.copyFile(is, stream);
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());

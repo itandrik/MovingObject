@@ -1,4 +1,4 @@
-package ua.kpi.chernysh.andrii.diplomamovingobjectclient;
+package ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.R;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.activity.WiFiDirectActivity;
 
 /**
  * A ListFragment that displays available peers on discovery and requests the

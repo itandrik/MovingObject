@@ -1,4 +1,4 @@
-package ua.kpi.chernysh.andrii.diplomamovingobjectclient;
+package ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -20,8 +21,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.R;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.P2PReceiver;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment.DeviceDetailFragment;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment.DeviceListFragment;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.model.SettingsManager;
 
 import static ua.kpi.chernysh.andrii.diplomamovingobjectclient.R.id.btnWifi;
 
@@ -34,14 +47,15 @@ import static ua.kpi.chernysh.andrii.diplomamovingobjectclient.R.id.btnWifi;
  */
 public class WiFiDirectActivity extends Activity implements
         WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener,
-        View.OnClickListener{
-    public static final String TAG = "wifidirectdemo";
+        View.OnClickListener {
+    public static final String TAG = "wifidirect";
     private WifiP2pManager manager;
     private boolean isWifiP2pEnabled = false;
     private boolean retryChannel = false;
     private final IntentFilter intentFilter = new IntentFilter();
     private WifiP2pManager.Channel channel;
-    private BroadcastReceiver  receiver = null;
+    private BroadcastReceiver receiver = null;
+    private Locale locale;
 
     /**
      * @param isWifiP2pEnabled the isWifiP2pEnabled to set
@@ -51,7 +65,7 @@ public class WiFiDirectActivity extends Activity implements
         ImageButton wifiBtn = (ImageButton) findViewById(btnWifi);
         TextView tvWifi = (TextView) findViewById(R.id.tvWifi);
 
-        if(isWifiP2pEnabled){
+        if (isWifiP2pEnabled) {
             wifiBtn.setBackgroundResource(R.drawable.ic_wifi_on);
             tvWifi.setText(R.string.wifi_on);
         } else {
@@ -73,8 +87,37 @@ public class WiFiDirectActivity extends Activity implements
         channel = manager.initialize(this, getMainLooper(), null);
 
         ImageButton btnWifi = (ImageButton) findViewById(R.id.btnWifi);
+        ImageView btnLanguage = (ImageView) findViewById(R.id.ivLanguage);
+        TextView tvLanguage = (TextView) findViewById(R.id.tvLanguage);
+
         btnWifi.setOnClickListener(this);
+        btnLanguage.setOnClickListener(this);
+        tvLanguage.setOnClickListener(this);
         findViewById(R.id.btnDiscover).setOnClickListener(this);
+
+        SettingsManager sm = new SettingsManager(this);
+        String lang = sm.getLocale();
+
+        Log.d(TAG, "onCreate: lang = " + lang);
+        Log.d(WiFiDirectActivity.TAG,"Сейчас времени : : " + new SimpleDateFormat("HH:mm:sss.SSS")
+                .format(new Date()));
+        locale = new java.util.Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, null);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        SettingsManager sm = new SettingsManager(this);
+        String lang = sm.getLocale();
+        locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, null);
     }
 
     /**
@@ -158,7 +201,7 @@ public class WiFiDirectActivity extends Activity implements
 
             @Override
             public void onFailure(int reason) {
-                Toast.makeText(WiFiDirectActivity.this, "Connect failed. Retry.",
+                Toast.makeText(WiFiDirectActivity.this, getString(R.string.connecting_failure),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -215,14 +258,19 @@ public class WiFiDirectActivity extends Activity implements
                 manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(WiFiDirectActivity.this, "Aborting connection",
+                        Toast.makeText(WiFiDirectActivity.this, getString(R.string.aborting_connection),
                                 Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(int reasonCode) {
+                        DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
+                                .findFragmentById(R.id.frag_detail);
+                        if (fragment.progressDialog != null) {
+                            fragment.progressDialog.dismiss();
+                        }
                         Toast.makeText(WiFiDirectActivity.this,
-                                "Connect abort request failed. Reason Code: " + reasonCode,
+                                getString(R.string.aborting_failure, reasonCode),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -234,9 +282,9 @@ public class WiFiDirectActivity extends Activity implements
     public void onClick(View v) {
         final WifiManager wifi = (WifiManager) getApplicationContext()
                 .getSystemService(Context.WIFI_SERVICE);
-        if(v.getId() == btnWifi){
+        if (v.getId() == btnWifi) {
             wifi.setWifiEnabled(!isWifiP2pEnabled);
-        } else if(v.getId() == R.id.btnDiscover){
+        } else if (v.getId() == R.id.btnDiscover) {
             if (!isWifiP2pEnabled) {
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setIcon(R.drawable.ic_wifi_on)
@@ -260,13 +308,51 @@ public class WiFiDirectActivity extends Activity implements
             h.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(!isWifiP2pEnabled){
+                    if (!isWifiP2pEnabled) {
                         h.post(this);
                     } else {
                         discoverPeers();
                     }
                 }
             });
+        } else if (v.getId() == R.id.tvLanguage || v.getId() == R.id.ivLanguage) {
+            View content = getLayoutInflater().inflate(R.layout.language_content, null);
+
+            final RadioButton rRu = (RadioButton) content.findViewById(R.id.rRu);
+            final RadioButton rEn = (RadioButton) content.findViewById(R.id.rEn);
+
+            final String[] codes = getResources().getStringArray(R.array.languages_codes);
+            final SettingsManager sm = new SettingsManager(this);
+
+            new AlertDialog.Builder(this)
+                    .setView(content)
+                    .setTitle(R.string.change_language_title)
+                    .setPositiveButton(R.string.action_choose, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (rRu.isChecked()) {
+                                if (sm.getLocale().equals(codes[0])) return;
+                                sm.setLocale(codes[0]); // ua
+                            } else if (rEn.isChecked()) {
+                                if (sm.getLocale().equals(codes[1])) return;
+                                sm.setLocale(codes[1]); // en
+                            }
+
+                            new AlertDialog.Builder(WiFiDirectActivity.this)
+                                    .setTitle(R.string.need_restart)
+                                    .setMessage(R.string.restart_app_info)
+                                    .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            System.exit(0);
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.later, null)
+                                    .show();
+                        }
+                    })
+                    .setNegativeButton(R.string.action_cancel, null)
+                    .show();
         }
     }
 
@@ -277,13 +363,13 @@ public class WiFiDirectActivity extends Activity implements
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(WiFiDirectActivity.this, "Discovery Initiated",
+                Toast.makeText(WiFiDirectActivity.this, getString(R.string.discover_init),
                         Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int reasonCode) {
-                Toast.makeText(WiFiDirectActivity.this, "Discovery Failed : " + reasonCode,
+                Toast.makeText(WiFiDirectActivity.this, getString(R.string.discover_failed, reasonCode),
                         Toast.LENGTH_SHORT).show();
             }
         });

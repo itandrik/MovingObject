@@ -1,7 +1,9 @@
-package ua.kpi.chernysh.andrii.diplomamovingobjectclient;
+package ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment;
 
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
@@ -12,20 +14,26 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
+
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.R;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.activity.ModeChooseActivity;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.activity.WiFiDirectActivity;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.model.FileTransferService;
+
 /**
  * A fragment that manages a particular peer and allows interaction with device
  * i.e. setting up network connection and transferring data.
@@ -35,7 +43,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
-    ProgressDialog progressDialog = null;
+    public ProgressDialog progressDialog = null;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -52,15 +60,17 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
-                progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
-                        "Connecting to :" + device.deviceAddress, true, true
-//                        new DialogInterface.OnCancelListener() {
-//
-//                            @Override
-//                            public void onCancel(DialogInterface dialog) {
-//                                ((DeviceActionListener) getActivity()).cancelDisconnect();
-//                            }
-//                        }
+                progressDialog = ProgressDialog.show(getActivity(), getString(R.string.connecting_dlg_title),
+                        getString(R.string.connecting_dlg_text,device.deviceName,device.deviceAddress),
+                        true, true,
+                        new DialogInterface.OnCancelListener() {
+
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+                                ((DeviceListFragment.DeviceActionListener) getActivity()).cancelDisconnect();
+                                progressDialog.dismiss();
+                            }
+                        }
                 );
                 ((DeviceListFragment.DeviceActionListener) getActivity()).connect(config);
             }
@@ -120,7 +130,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         // server. The file server is single threaded, single connection server
         // socket.
         if (info.groupFormed && info.isGroupOwner) {
-            new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text))
+            new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text), info)
                     .execute();
         } else if (info.groupFormed) {
             // The other device acts as the client. In this case, we enable the
@@ -131,6 +141,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         }
         // hide the connect button
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
+        startActivity(new Intent(getActivity(), ModeChooseActivity.class));
     }
     /**
      * Updates the UI with device data
@@ -168,13 +179,16 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     public static class FileServerAsyncTask extends AsyncTask<Void, Void, String> {
         private Context context;
         private TextView statusText;
+        private WifiP2pInfo info;
+        private long prevTime;
         /**
          * @param context
          * @param statusText
          */
-        public FileServerAsyncTask(Context context, View statusText) {
+        public FileServerAsyncTask(Context context, View statusText, WifiP2pInfo info) {
             this.context = context;
             this.statusText = (TextView) statusText;
+            this.info = info;
         }
         @Override
         protected String doInBackground(Void... params) {
@@ -192,14 +206,48 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 f.createNewFile();
                 Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
-                copyFile(inputstream, new FileOutputStream(f));
+
+                DataInputStream dataInputStream = new DataInputStream(client.getInputStream());
+                prevTime = dataInputStream.readLong();
+                int data = dataInputStream.readInt();
+                Log.d(WiFiDirectActivity.TAG,"received item : " + data);
+                //Log.d(WiFiDirectActivity.TAG,"now time : " + new SimpleDateFormat("HH:mm:sss.SSS").format(new Date()));
+
+                //Log.d(WiFiDirectActivity.TAG,"current time : " + new SimpleDateFormat("HH:mm:ss").format(new Date()));
+
+                //copyFile(inputstream, new FileOutputStream(f));
+
+                /*Intent serviceIntent = new Intent(context, TimeTransferService.class);
+                serviceIntent.setAction(TimeTransferService.ACTION_SEND_TIME);
+                serviceIntent.putExtra(TimeTransferService.EXTRAS_GROUP_OWNER_ADDRESS_TIME,
+                        info.groupOwnerAddress.getHostAddress());
+                serviceIntent.putExtra(TimeTransferService.EXTRAS_GROUP_OWNER_PORT_TIME, 8981);
+                context.startService(serviceIntent);
+                ServerSocket serverSocket2 = new ServerSocket(8981);
+                Log.d(WiFiDirectActivity.TAG, "Server2: Socket opened");
+                Socket client2 = serverSocket2.accept();
+                DataInputStream dataInputStream2 = new DataInputStream(client2.getInputStream());
+                long secondTime = dataInputStream2.readLong();
+                Log.d(WiFiDirectActivity.TAG,"received time 2: " + new SimpleDateFormat("HH:mm:sss.SSS")
+                       .format(new Date(secondTime - 3600000)));*/
+
+                Log.d(WiFiDirectActivity.TAG,/*"receive buffer size : " + client.getReceiveBufferSize() +
+
+                "send buffer size : " + client.getSendBufferSize() + */"send time after : " +
+                        (new Date().getTime() - prevTime + 3600000 - 26900) + " ms");
+
                 serverSocket.close();
+                client.close();
+                /*serverSocket2.close();
+                client2.close();*/
                 return f.getAbsolutePath();
             } catch (IOException e) {
+
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
                 return null;
             }
         }
+
         /*
          * (non-Javadoc)
          * @see android.os.AsyncTask#onPostExecute(java.lang.Object)

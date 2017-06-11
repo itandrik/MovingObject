@@ -10,38 +10,93 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
-        <ImageView
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_002_car"/>
-        <ImageView
-            android:layout_width="wrap_content"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_002_car" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_005_zeppelin" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_006_helicopter" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_007_sailing_ship" />
+
+            <TextView
+                android:id="@+id/tvWifi"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="right|center_vertical"
+                android:paddingRight="8dp"
+                android:text="dfgsdfgsdfg"
+                android:textColor="@color/textPrimary" />
+
+            <ImageButton
+                android:id="@+id/btnWifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_005_zeppelin"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_006_helicopter"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_007_sailing_ship"/>
-        <TextView
-            android:id="@+id/tvWifi"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:gravity="right|center_vertical"
-            android:paddingRight="8dp"
-            android:text="dfgsdfgsdfg"
-            android:layout_height="match_parent"
-            android:textColor="@color/textPrimary"/>
-        <ImageButton
-            android:id="@+id/btnWifi"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_001_quad" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_008_car_steering_wheel" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_003_mustang" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_004_jet_ski" />
+
+            <TextView
+                android:id="@+id/tvLanguage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="right|center_vertical"
+                android:paddingRight="8dp"
+                android:text="@string/change_language"
+                android:textColor="@color/textPrimary" />
+
+            <ImageView
+                android:id="@+id/ivLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_language" />
+        </LinearLayout>
     </LinearLayout>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -119,11 +174,11 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:background="@color/textBackgroundAccent"
-        android:text="@string/label_peers"
+        android:gravity="center"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
+        android:text="@string/label_peers"
         android:textColor="@color/textPrimary"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -145,10 +200,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:paddingTop="4dp"
 
         android:text="@string/empty_message" />
 
@@ -158,8 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:elevation="16dp"
         android:background="@color/colorPrimary"
+        android:elevation="16dp"
         android:text="@string/discover_peers_button" />
-
 </LinearLayout>

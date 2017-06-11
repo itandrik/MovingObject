@@ -26,5 +26,39 @@
     <!-- Dialog discover peers -->
     <string name="finding_peers_title">Зачекайте, будь ласка</string>
     <string name="finding_peers_msg">Відбувається пошук рухомих об\'єктів</string>
+    <string name="discover_init">Пошук пристроїв ініційований</string>
+    <string name="discover_failed">Помилка ініціювання пошуку пристроїв. Код помилки: %d</string>
 
+    <!-- Dialog connecting -->
+    <string name="connecting_failure">З\'єднання завершилось невдачею. Повторіть</string>
+    <string name="connecting_dlg_title">Зачекайте будь ласка</string>
+    <string name="connecting_dlg_text">Відбувається з\'єднання з пристроєм %1$s.\n Фізична адреса : %2$s</string>
+    <string name="aborting_connection">Переривання з\'єднання</string>
+    <string name="aborting_failure">Переривання з\'єднання завершилось невдачею. Код помилки %d</string>
+
+    <string name="manual_mode_button">Режим ручного управління</string>
+    <string name="automatic_mode_button">Режим автоматичного управління</string>
+    <string name="change_language">Змінити мову</string>
+    <string name="change_language_title">Оберіть мову</string>
+    <string name="lang_ua">Українська</string>
+    <string name="lang_en">English</string>
+    <string name="action_choose">ОБРАТИ</string>
+
+    <string name="need_restart">Restart required</string>
+    <string name="restart_app_info">Application needs to be restarted to apply new language settings</string>
+    <string name="restart">Restart</string>
+    <string name="later">Later</string>
+    <string name="now">сейчас</string>
+
+    <string-array name="languages_codes">
+        <item>ua</item>
+        <item>en</item>
+    </string-array>
+
+    <string name="action_cancel">Відміна</string>
+    <string name="title_activity_automatical_mode">Map</string>
+
+    <string name="run">Вперед</string>
+    <string name="stop">Зупинити</string>
+    <string name="go_to_manual">Перейти в режим ручного керування</string>
 </resources>

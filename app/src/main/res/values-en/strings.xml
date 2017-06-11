@@ -23,4 +23,19 @@
     <!-- Dialog discover peers -->
     <string name="finding_peers_title">Wait please</string>
     <string name="finding_peers_msg">Finding moving objects in your area</string>
+
+    <string name="need_restart">Необхідний перезапуск</string>
+    <string name="restart_app_info">Для зміни мови додатку його необхідно перезавантажити.</string>
+    <string name="restart">Перезавантажити</string>
+    <string name="later">Пізніше</string>
+    <string name="now">Зараз</string>
+
+    <string-array name="languages_codes">
+        <item>ua</item>
+        <item>en</item>
+    </string-array>
+    <string name="action_cancel">CANCEL</string>
+    <string name="run">Start</string>
+    <string name="stop">Stop</string>
+    <string name="go_to_manual">Switch to manual coltrol mode</string>
 </resources>

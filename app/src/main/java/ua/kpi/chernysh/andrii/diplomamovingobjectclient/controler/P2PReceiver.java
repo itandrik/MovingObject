@@ -1,4 +1,4 @@
-package ua.kpi.chernysh.andrii.diplomamovingobjectclient;
+package ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +7,11 @@ import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
+
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.R;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.activity.WiFiDirectActivity;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment.DeviceDetailFragment;
+import ua.kpi.chernysh.andrii.diplomamovingobjectclient.controler.fragment.DeviceListFragment;
 
 /**
  * Created by Dron on 13-May-17.

@@ -12,4 +12,6 @@
 
     <color name="status_bar_color">#FF000000</color>
     <color name="layout_border_color">#FF111111</color>
+
+    <color name="manual_mode_bg">#EBEBEB</color>
 </resources>
